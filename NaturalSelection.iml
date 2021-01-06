@@ -7,9 +7,9 @@
       <sourceFolder url="file://$MODULE_DIR$/src/entities" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/startup" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/gui" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/entities/genes" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/gui/buttons" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/simulations" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/entities/genes" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

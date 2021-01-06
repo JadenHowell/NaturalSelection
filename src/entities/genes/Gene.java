@@ -1,4 +1,4 @@
-package genes;
+
 
 public abstract class Gene {
     protected String name;

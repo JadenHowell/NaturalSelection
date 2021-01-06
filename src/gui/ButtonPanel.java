@@ -1,12 +1,11 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ButtonPanel extends JPanel {
-    JButton start;
-    JButton pause;
-    JButton cont;
-    JButton restart;
+    JButton start, pause, cont, restart;
+    CustomTextField numEntitiesField, startingSpeedField, startingSizeField;
 
     Simulator simulator;
 
@@ -19,6 +18,9 @@ public class ButtonPanel extends JPanel {
         add(pause);
         add(cont);
         add(restart);
+        add(numEntitiesField);
+        add(startingSpeedField);
+        add(startingSizeField);
     }
 
     private void setupListeners(){
@@ -26,6 +28,17 @@ public class ButtonPanel extends JPanel {
         pause = new JButton("Pause");
         cont = new JButton("Resume");
         restart = new JButton("Reset");
+        numEntitiesField = new CustomTextField();
+        numEntitiesField.setPlaceholder("Number of entities (default 10)");
+        startingSpeedField = new CustomTextField();
+        startingSpeedField.setPlaceholder("Starting speed (default 10)");
+        startingSizeField = new CustomTextField();
+        startingSizeField.setPlaceholder("Starting size (default 10)");
+
+        GridLayout layout = new GridLayout(2, 4);
+        layout.setHgap(10);
+        layout.setVgap(5);
+        setLayout(layout);
 
         cont.setEnabled(false);
         pause.setEnabled(false);
@@ -36,7 +49,8 @@ public class ButtonPanel extends JPanel {
                 pause.setEnabled(true);
                 cont.setEnabled(false);
                 start.setEnabled(false);
-                simulator.unpause();
+
+                onPressStart();
             }
         });
 
@@ -69,6 +83,38 @@ public class ButtonPanel extends JPanel {
             }
         });
 
+    }
+
+
+    private void onPressStart(){
+        String startSize = startingSizeField.getText();
+        String startSpeed = startingSpeedField.getText();
+        String startNum = numEntitiesField.getText();
+
+        if(startNum.equals("") || !isNumeric(startNum)) {
+            simulator.setNumStartEnt(10);
+        }else{
+            simulator.setNumStartEnt(Integer.parseInt(startNum));
+        }
+
+        if(startSpeed.equals("") || !isNumeric(startSpeed)) {
+            simulator.setEntStartSpeed(10);
+        }else{
+            simulator.setEntStartSpeed(Integer.parseInt(startSpeed));
+        }
+
+        if(startSize.equals("") || !isNumeric(startSize)) {
+            simulator.setEntStartSize(10);
+        }else{
+            simulator.setEntStartSize(Integer.parseInt(startSize));
+        }
+
+        simulator.unpause();
+    }
+
+    //This checks if a string can be parsed to an integer
+    private static boolean isNumeric(String str) {
+        return str.matches("\\d?");
     }
 
 }

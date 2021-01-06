@@ -1,5 +1,4 @@
 import java.util.HashMap;
-import genes.Gene;
 
 public class Entity {
     private HashMap<String, Gene> genes;
