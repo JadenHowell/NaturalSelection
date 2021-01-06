@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ButtonPanel extends JPanel {
-    JButton start, pause, cont, restart;
+    JButton start, pause, cont, reset;
     CustomTextField numEntitiesField, startingSpeedField, startingSizeField;
 
     Simulator simulator;
@@ -17,7 +17,7 @@ public class ButtonPanel extends JPanel {
         add(start);
         add(pause);
         add(cont);
-        add(restart);
+        add(reset);
         add(numEntitiesField);
         add(startingSpeedField);
         add(startingSizeField);
@@ -27,7 +27,7 @@ public class ButtonPanel extends JPanel {
         start = new JButton("Start");
         pause = new JButton("Pause");
         cont = new JButton("Resume");
-        restart = new JButton("Reset");
+        reset = new JButton("Reset");
         numEntitiesField = new CustomTextField();
         numEntitiesField.setPlaceholder("Number of entities (default 10)");
         startingSpeedField = new CustomTextField();
@@ -72,7 +72,7 @@ public class ButtonPanel extends JPanel {
             }
         });
 
-        restart.addActionListener(new ActionListener() {
+        reset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 start.setEnabled(true);
@@ -110,6 +110,7 @@ public class ButtonPanel extends JPanel {
         }
 
         simulator.unpause();
+        simulator.start();
     }
 
     //This checks if a string can be parsed to an integer

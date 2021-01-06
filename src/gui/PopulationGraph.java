@@ -23,7 +23,12 @@ public class PopulationGraph {
     }
 
     public ChartPanel getChart(){
-        return new ChartPanel(chart);
+        //gridbaglayouts, when shrunk, try to turn things into their minimum size rather than resizing.
+        //      We create a new dimension to define the preferred size to be smaller, so it will not resize perfectly, but won't shrink to nothing
+        ChartPanel toReturn = new ChartPanel(chart);
+        Dimension smallest = new Dimension((int)(toReturn.getPreferredSize().getWidth()*.75), (int)(toReturn.getPreferredSize().getHeight()*.75));
+        toReturn.setPreferredSize(smallest);
+        return toReturn;
     }
 
     private void initChart(){
@@ -49,7 +54,7 @@ public class PopulationGraph {
 
         chart.getLegend().setFrame(BlockBorder.NONE);
 
-        chart.setTitle(new TextTitle("Population Size Over Time",
+        chart.setTitle(new TextTitle("Population Size",
                         new Font("Serif", java.awt.Font.BOLD, 18)
                 )
         );
