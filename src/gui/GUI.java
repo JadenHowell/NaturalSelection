@@ -7,14 +7,13 @@ import java.net.URL;
 public class GUI extends JFrame implements ActionListener {
 
     PopulationGraph populationGraph;
-    int time;
     Simulator simulator = Simulator.getInstance();
 
     public GUI(){
         super("Natural Selection Simulator");
 
         populationGraph = new PopulationGraph();
-        time = 0;
+        simulator.setPopulationGraph(populationGraph);
 
         initGUI();
         setupIcon();
@@ -41,15 +40,6 @@ public class GUI extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-//      System.out.println("ActionPerformed event triggered at time = " + time);
-        if(!simulator.isPaused) {
-            populationGraph.dataReceived(time, Math.random());
-            time++;
-        }
-        if(simulator.needsReset){
-            populationGraph.reset();
-            simulator.doneReset();
-            time = 0;
-        }
+        simulator.tick();
     }
 }

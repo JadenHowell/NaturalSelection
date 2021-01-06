@@ -2,8 +2,10 @@ public class Simulator {
 
     boolean isPaused = true;
     boolean needsReset = false;
+    int time = 0;
 
     static Simulator instance;
+    static PopulationGraph populationGraph;
 
     private Simulator(){}
 
@@ -14,20 +16,26 @@ public class Simulator {
         return instance;
     }
 
-    public void pause(){
-        isPaused = true;
-    }
+    public void pause(){ isPaused = true; }
 
     public void unpause(){
         isPaused = false;
     }
 
     public void reset(){
-        needsReset = true;
+        populationGraph.reset();
     }
 
-    public void doneReset(){
-        needsReset = false;
+    public void setPopulationGraph(PopulationGraph popGraph){  populationGraph = popGraph;  }
+
+    public void tick(){
+        if (isPaused) {
+            return;
+        }
+
+        populationGraph.dataReceived(time, Math.random());
+        time++;
+
     }
 
 }
