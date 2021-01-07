@@ -115,7 +115,7 @@ public class ButtonPanel extends JPanel {
 
     //This checks if a string can be parsed to an integer
     private static boolean isNumeric(String str) {
-        return str.matches("\\d?");
+        return str.matches("\\d+");
     }
 
 }

@@ -21,8 +21,6 @@ public class GUI extends JFrame {
         setLocationRelativeTo(null); //This centers it in the screen for some reason
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
-
-        simulator.start();
     }
 
 

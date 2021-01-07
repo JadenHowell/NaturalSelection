@@ -3,6 +3,7 @@
 public abstract class Gene {
     protected String name;
     protected double value;
+    protected double mutationChance = .50;
 
     Gene(){}
 
@@ -14,11 +15,14 @@ public abstract class Gene {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public abstract void mutateValue();
 
     public void setValue(double value) {
         this.value = value;
+    }
+
+    @Override
+    public String toString(){
+        return name + ":" + value;
     }
 }

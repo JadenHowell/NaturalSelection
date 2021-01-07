@@ -1,17 +1,24 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Simulator implements ActionListener {
+
+    private final int tickDelay = 100;
 
     boolean isPaused = true;
 
     private int time = 0, numStartEnt, entStartSpeed, entStartSize;
+    private double survivalChance = .99, replicationChance = .01;
 
     static private Timer timer;
     static private Simulator instance;
     static private PopulationGraph populationGraph;
     static private TraitGraph traitGraph;
+
+    private List<Entity> entities;
 
     private Simulator(){}
 
@@ -23,7 +30,10 @@ public class Simulator implements ActionListener {
     }
 
     public void start(){
-        timer = new Timer(100, this);
+        entities = SimHelp.createEntities(numStartEnt, survivalChance,replicationChance, entStartSpeed, entStartSize);
+        //System.out.println(entities.toString());
+
+        timer = new Timer(tickDelay, this);
         timer.start();
     }
 
@@ -55,14 +65,32 @@ public class Simulator implements ActionListener {
 
     public void setTraitGraph(TraitGraph traitGraph) { Simulator.traitGraph = traitGraph; }
 
+    public void setSurvivalChance(double survivalChance) { this.survivalChance = survivalChance; }
+
+    public void setReplicationChance(double replicationChance) { this.replicationChance = replicationChance; }
+
     public void tick(){
         if (isPaused) {
             return;
         }
-        populationGraph.dataReceived(time, Math.random());
-        traitGraph.dataReceived("Speed", time, Math.random());
-        traitGraph.dataReceived("Size", time, Math.random());
+        populationGraph.dataReceived(time, entities.size());
+        traitGraph.dataReceived("Speed", time, SimHelp.getAverageGeneValue(entities, "Speed"));
+        traitGraph.dataReceived("Size", time, SimHelp.getAverageGeneValue(entities, "Size"));
         time++;
+        updatePopSize();
+    }
+
+    private void updatePopSize(){
+        List<Entity> newEnts = new ArrayList<>();
+        for(Entity ent : entities){
+            if(SimHelp.entityLivesOn(ent)){
+                newEnts.add(ent);
+            }
+            if(SimHelp.entityReproduces(ent)){
+                newEnts.add(ent.replicate());
+            }
+        }
+        entities = newEnts;
     }
 
     @Override

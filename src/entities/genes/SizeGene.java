@@ -1,12 +1,12 @@
 
 
-public class SpeedGene extends Gene {
-    SpeedGene(double value){
-        name = "Speed";
+public class SizeGene extends Gene {
+    SizeGene(double value){
+        name = "Size";
         this.value = value;
     }
 
-    //TODO: Make rules for speed mutations
+    //TODO: Make rules for size mutations
     @Override
     public void mutateValue(){
         if (Math.random() < mutationChance) { // This means there is a 5% chance of mutating

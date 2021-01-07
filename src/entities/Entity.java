@@ -2,21 +2,40 @@ import java.util.HashMap;
 
 public class Entity {
     private HashMap<String, Gene> genes;
-    private int replicationChance;
-    private int survivalChance;
+    private double replicationChance;
+    private double survivalChance;
 
-    Entity(int survivalChance, int replicationChance){
+
+    Entity(double survivalChance, double replicationChance){
         genes = new HashMap<>();
         this.replicationChance = replicationChance;
         this.survivalChance = survivalChance;
     }
 
     public Entity replicateExact(){
-        return new Entity(survivalChance, replicationChance);
+        Entity child = new Entity(survivalChance, replicationChance);
+        child.addGene(new SizeGene(this.genes.get("Size").getValue()));
+        child.addGene(new SpeedGene(this.genes.get("Speed").getValue()));
+        return child;
     }
 
     public Entity replicate(){
-        return replicateExact();
+        Entity child = replicateExact();
+        for(String geneName : child.genes.keySet()){
+            child.genes.get(geneName).mutateValue();
+        }
+        child.updateChances();
+        return child;
+    }
+
+    private void updateChances(){
+        if(genes.get("Speed").getValue() <= 0 || genes.get("Size").getValue() <= 0){
+            survivalChance = 0;
+            replicationChance = 0;
+            return;
+        }
+        survivalChance = survivalChance + (genes.get("Speed").getValue()*.001)-(genes.get("Size").getValue()*.001);
+        replicationChance = replicationChance + (genes.get("Size").getValue()*.001)-(genes.get("Speed").getValue()*.001);
     }
 
     public boolean addGene(Gene gene) {
@@ -28,19 +47,36 @@ public class Entity {
         return true;
     }
 
-    public int getReplicationChance() {
+    public double getGeneVal(String g){
+        if(!genes.containsKey(g)){
+            return 0;
+        }
+        return genes.get(g).getValue();
+    }
+
+    public double getReplicationChance() {
         return replicationChance;
     }
 
-    public int getSurvivalChance() {
+    public double getSurvivalChance() {
         return survivalChance;
     }
 
-    public void setReplicationChance(int replicationChance) {
+    public void setReplicationChance(double replicationChance) {
         this.replicationChance = replicationChance;
     }
 
-    public void setSurvivalChance(int survivalChance) {
+    public void setSurvivalChance(double survivalChance) {
         this.survivalChance = survivalChance;
+    }
+
+    @Override
+    public String toString(){
+        String out = "Entity, genes: { ";
+        for(String key : genes.keySet()){
+            out += genes.get(key).toString()+ " ";
+        }
+        out += "}";
+        return out;
     }
 }
